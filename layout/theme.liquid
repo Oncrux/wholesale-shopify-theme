@@ -293,9 +293,11 @@
       tabindex='-1'
     >
       {%- unless customer -%}
-        {%- section 'main-login' -%}
-      {% else %}
-        {{ content_for_layout }}
+        {%- if template contains 'customers' or request.path == '/challenge' -%}
+          {{ content_for_layout }}
+        {% else %}
+          {%- section 'main-login' -%}
+        {%- endif -%}
       {%- endunless -%}
     </main>
 
