@@ -13,12 +13,12 @@
 
 ## How is the Repo structured
 
-currently this is a buildless theme
+Currently this is a buildless theme.
 
-the Github Integration follows the main branch and will edits from the web admin console will be committed there by the shopify bot
+The Github Integration follows the main branch and will edits from the web admin console will be committed there by the shopify bot.
 
-refer to the repo structure, any folders not matching the shown structure will be ignored
+Refer to the repo structure, any folders not matching the shown structure will be ignored.
 
-inspect the main branch for any admin changes
+Inspect the main branch for any admin changes.
 
-all developer changes will occur on feature branches and PR'd to dev which after release will be PR'd to main
+All developer changes will occur on feature branches and PR'd to dev which after release will be PR'd to main.
