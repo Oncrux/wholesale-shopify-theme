@@ -1,7 +1,8 @@
 {
   "current": {
     "logo": "{{ shop.brand.logo }}",
-    "logo_width": 80,
+    "logo_width": 260,
+    "favicon": "shopify:\/\/shop_images\/OnCrux_Web_Circle_Logo_Red.png",
     "colors_solid_button_labels": "#1f1f21",
     "colors_accent_1": "#e22120",
     "gradient_accent_1": "",
