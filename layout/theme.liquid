@@ -292,13 +292,14 @@
       role='main'
       tabindex='-1'
     >
-      {%- unless customer -%}
-        {%- if template contains 'customers' or request.path == '/challenge' -%}
-          {{ content_for_layout }}
-        {% else %}
-          {%- section 'main-login' -%}
-        {%- endif -%}
-      {%- endunless -%}
+      {%- if customer
+        or request.path == '/challenge'
+        or request.path == routes.account_register_url
+      -%}
+        {{ content_for_layout }}
+      {% else %}
+        {%- section 'main-login' -%}
+      {%- endif -%}
     </main>
 
     {% sections 'footer-group' %}
