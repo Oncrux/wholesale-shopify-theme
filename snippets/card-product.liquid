@@ -237,14 +237,11 @@
             <product-form>
               {%- if card_product.variants.size > 1 or qty_rules -%}
                 {% comment %} utility classes on the checkbox container, not implemented in CSS yet {% endcomment %}
-                <fieldset class='product-form__input product-form__checkbox checkbox-center'>
-                  {% comment %} hard coded, should be in locale {% endcomment %}
-                  <legend>choose your size:</legend>
-                  <div>
-                    <input type='checkbox' id='lorem' name='lorem'>
-                    <label for='lorem'>lorem</label>
-                  </div>
-                </fieldset>
+                {% render 'product-variant-checkbox',
+                  product: card_product,
+                  block: block,
+                  product_form_id: product_form_id
+                %}
               {%- endif -%}
               {% comment %} quantity-input class selector for adding products to cart on 1 page {% endcomment %}
               <div class='product-form__input product-form__quantity quantity-center'>
