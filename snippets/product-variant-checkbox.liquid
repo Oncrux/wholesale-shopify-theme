@@ -23,19 +23,44 @@
     {% endif %}
     {{ block.shopify_attributes }}
   >
-    <fieldset class='js product-form__input'>
-      <legend class='form__label'>choose your size:</legend>
-      {%- for variant in product.variants -%}
-        <div>
-          <input type='checkbox' id='lorem' name='lorem'>
-          <label for='lorem'>{{ variant.title }}</label>
-        </div>
-      {%- endfor -%}
-    </fieldset>
+    {%- for option in product.options_with_values -%}
+      <fieldset>
+        <legend class='form__label'>{{ option.name }}</legend>
+        {% comment %}
+          where product-variant-picker.liquid
+          would render product-variant-options
+        {% endcomment %}
+        {%- for value in option.values -%}
+          <div class='checkbox'>
+            <input
+              type='checkbox'
+              id='{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}'
+              name='{{ option.name }}'
+              value='{{ value | escape }}'
+              form='{{ product_form_id }}'
+              {% if option.selected_value == value %}
+                checked
+              {% endif %}
+              {% if option_disabled %}
+                class='disabled'
+              {% endif %}
+            >
+            <label
+              for='{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}'
+            >
+              {{- value -}}
+              <span class='visually-hidden'>
+                {{- 'products.product.variant_sold_out_or_unavailable' | t -}}
+              </span>
+            </label>
+          </div>
+        {%- endfor -%}
+      </fieldset>
 
-    <script type='application/json'>
-      {{ product.variants | json }}
-    </script>
+      <script type='application/json'>
+        {{ product.variants | json }}
+      </script>
+    {%- endfor -%}
   </variant-checkboxes>
 {%- endunless -%}
 
