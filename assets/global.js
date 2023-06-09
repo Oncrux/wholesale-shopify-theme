@@ -1004,7 +1004,7 @@ class VariantSelects extends HTMLElement {
       this.setUnavailable();
     } else {
       this.updateMedia();
-      this.updateURL();
+      // this.updateURL();
       this.updateVariantInput();
       this.renderProductInfo();
       this.updateShareUrl();
@@ -1026,7 +1026,6 @@ class VariantSelects extends HTMLElement {
         })
         .includes(false);
     });
-    console.log(this.currentVariant);
   }
 
   updateMedia() {
@@ -1076,6 +1075,7 @@ class VariantSelects extends HTMLElement {
     const productForms = document.querySelectorAll(
       `#product-form-${this.dataset.section}, #product-form-installment-${this.dataset.section}`
     );
+
     productForms.forEach((productForm) => {
       const input = productForm.querySelector('input[name="id"]');
       input.value = this.currentVariant.id;
@@ -1088,6 +1088,7 @@ class VariantSelects extends HTMLElement {
       (variant) => this.querySelector(':checked').value === variant.option1
     );
     const inputWrappers = [...this.querySelectorAll('.product-form__input')];
+
     inputWrappers.forEach((option, index) => {
       if (index === 0) return;
       const optionInputs = [
@@ -1304,23 +1305,114 @@ class VariantRadios extends VariantSelects {
 
 customElements.define('variant-radios', VariantRadios);
 
-class VariantCheckboxes extends VariantSelects {
-  constructor() {
-    super();
-  }
+// new element in the theme
+customElements.define(
+  'variant-checkboxes',
+  class VariantCheckboxes extends VariantSelects {
+    constructor() {
+      super();
+      this.addEventListener('change', this.onVariantChange);
+      this.addButton = this.querySelector('[name="add"]');
+      this.addButton.addEventListener('click', this.addToCart.bind(this));
+    }
 
-  updateOptions() {
-    const fieldsets = Array.from(this.querySelectorAll('fieldset'));
-    this.options = fieldsets.map((fieldset) => {
-      return Array.from(fieldset.querySelectorAll('input'))
-        .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => checkbox.value);
-    });
-    console.log('updateOptions this.options: ', this.options);
-  }
-}
+    onVariantChange() {
+      this.updateOptions();
+      this.updateMasterId();
+      this.toggleAddButton(true, '', false);
+      this.updatePickupAvailability();
+      this.removeErrorMessage();
+      this.updateVariantStatuses();
 
-customElements.define('variant-checkboxes', VariantCheckboxes);
+      if (!this.currentVariant) {
+        this.toggleAddButton(true, '', true);
+        this.setUnavailable();
+      } else {
+        this.updateMedia();
+        // this.updateURL();
+        this.updateVariantInput();
+        this.renderProductInfo();
+        this.updateShareUrl();
+      }
+    }
+
+    updateOptions() {
+      const fieldsets = Array.from(this.querySelectorAll('fieldset'));
+      const optionValues = fieldsets.reduce((selectedOptions, fieldset) => {
+        return Array.from(
+          fieldset.querySelectorAll('input[type=checkbox]:checked')
+        ).map((checkbox) => checkbox.value);
+      }, {});
+
+      this.options = new Set(optionValues);
+    }
+
+    updateMasterId() {
+      this.currentVariant = this.getVariantData()
+        .filter((variant) => {
+          return this.options.has(variant.options[0]);
+        })
+        .map((variant) => parseInt(variant.id, 10));
+    }
+
+    updateVariantStatuses(quantity) {
+      // verify this.currentVariant has at least one id in it
+      //  if not return
+      // loop through this.currentVariant
+      //  get quantity amount &
+      //    verify the quantity amount is more than the quantity available
+
+      //  send that as an ajax request to the cart
+      // set inputAvailability
+
+      if (this.currentVariant.length <= 0) return;
+
+      const checkedQuantity = parseInt(
+        this.querySelector('input[type=number].quantity__input').value,
+        10
+      );
+      // how to verify quantity value?
+      this.formData = {
+        items: [],
+      };
+
+      this.currentVariant.forEach((variantId) => {
+        const item = { id: variantId, quantity: checkedQuantity };
+        this.formData.items.push(item);
+      });
+
+      console.log('this.formData.items', this.formData.items);
+    }
+
+    addToCart() {
+      fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.formData),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+      // .then(function (data) {
+      //   var ajaxEvent = new CustomEvent('ajaxProduct:added', {
+      //     detail: {
+      //       product: data,
+      //     },
+      //   });
+      //   document.dispatchEvent(ajaxEvent);
+      //   document
+      //     .querySelector('.js-drawer-open-cart .cart-link')
+      //     .dispatchEvent(new Event('click'));
+      // })
+    }
+  }
+);
 
 class ProductRecommendations extends HTMLElement {
   constructor() {
