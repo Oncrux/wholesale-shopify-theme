@@ -1311,29 +1311,9 @@ customElements.define(
   class VariantCheckboxes extends VariantSelects {
     constructor() {
       super();
-      this.addEventListener('change', this.onVariantChange);
+      this.addEventListener('oninput', this.onVariantChange);
       this.addButton = this.querySelector('[name="add"]');
       this.addButton.addEventListener('click', this.addToCart.bind(this));
-    }
-
-    onVariantChange() {
-      this.updateOptions();
-      this.updateMasterId();
-      this.toggleAddButton(true, '', false);
-      this.updatePickupAvailability();
-      this.removeErrorMessage();
-      this.updateVariantStatuses();
-
-      if (!this.currentVariant) {
-        this.toggleAddButton(true, '', true);
-        this.setUnavailable();
-      } else {
-        this.updateMedia();
-        // this.updateURL();
-        this.updateVariantInput();
-        this.renderProductInfo();
-        this.updateShareUrl();
-      }
     }
 
     updateOptions() {
@@ -1356,60 +1336,78 @@ customElements.define(
     }
 
     updateVariantStatuses(quantity) {
-      // verify this.currentVariant has at least one id in it
-      //  if not return
-      // loop through this.currentVariant
       //  get quantity amount &
       //    verify the quantity amount is more than the quantity available
 
-      //  send that as an ajax request to the cart
       // set inputAvailability
-
-      if (this.currentVariant.length <= 0) return;
-
-      const checkedQuantity = parseInt(
-        this.querySelector('input[type=number].quantity__input').value,
-        10
+      console.log(
+        'this.currentVariant in updateVariantStatuses',
+        this.currentVariant
       );
-      // how to verify quantity value?
+
       this.formData = {
         items: [],
       };
 
+      if (this.currentVariant.length <= 0) {
+        this.formData.items = [];
+        return;
+      }
+      const checkedQuantity = parseInt(
+        this.querySelector('input[type=number].quantity__input').value,
+        10
+      );
+      // TODO how to verify quantity value?
+
       this.currentVariant.forEach((variantId) => {
-        const item = { id: variantId, quantity: checkedQuantity };
+        const item = {
+          id: variantId,
+          quantity: checkedQuantity,
+          // sections: ['cart-notification-button', 'cart-icon-bubble'],
+        };
         this.formData.items.push(item);
       });
 
       console.log('this.formData.items', this.formData.items);
     }
 
-    addToCart() {
-      fetch(window.Shopify.routes.root + 'cart/add.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.formData),
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+    async addToCart() {
+      try {
+        const response = await fetch(
+          window.Shopify.routes.root + 'cart/add.js',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.formData),
+          }
+        );
 
-      // .then(function (data) {
-      //   var ajaxEvent = new CustomEvent('ajaxProduct:added', {
-      //     detail: {
-      //       product: data,
-      //     },
-      //   });
-      //   document.dispatchEvent(ajaxEvent);
-      //   document
-      //     .querySelector('.js-drawer-open-cart .cart-link')
-      //     .dispatchEvent(new Event('click'));
-      // })
+        if (!response.ok) {
+          throw new Error('Error: ' + response.status);
+        }
+
+        let parsedStates = await response.json();
+        console.log('parsedStates', parsedStates);
+        // this.showCartNotification(parsedStates);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    // Function to display the cart notification
+    showCartNotification(parsedStates) {
+      console.log('inside showCartNotification', parsedStates.items);
+      // Get or create the notification element
+      let notification = document.querySelector('cart-notification');
+      if (!notification) {
+        notification = document.createElement('cart-notification');
+        document.body.appendChild(notification);
+      }
+
+      parsedStates.items.forEach(async (parsedState) => {
+        await notification.renderContents(parsedState);
+      });
     }
   }
 );
