@@ -38,17 +38,43 @@
               name='{{ option.name }}'
               value='{{ value | escape }}'
               form='{{ product_form_id }}'
+              {%- liquid
+                for variant in product.variants
+                  if variant.option1 == value
+                    if variant.available
+                      assign option_disabled = false
+                    else
+                      assign option_disabled = true
+                    endif
+                    if variant.inventory_quantity <= 20
+                      assign option_low_stock = true
+                      assign static_low_stock_amount = variant.inventory_quantity
+                    else
+                      assign option_low_stock = false
+                    endif
+                  endif
+                endfor
+              -%}
               {% if option_disabled %}
-                class='disabled'
+                disabled
               {% endif %}
             >
             <label
               for='{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}'
             >
               {{- value -}}
-              <span class='visually-hidden'>
-                {{- 'products.product.variant_sold_out_or_unavailable' | t -}}
-              </span>
+              {%- if option_low_stock -%}
+                {%- if static_low_stock_amount > 0 -%}
+                  <div>
+                    <span>low stock:</span>
+                    <span>{{ static_low_stock_amount }}!</span>
+                  </div>
+                {%- else -%}
+                  <div>
+                    <span>out of stock</span>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
             </label>
           </div>
         {%- endfor -%}
@@ -62,7 +88,7 @@
       <label class='form__label' for='Quantity-{{ section.id }}'>
         {{ 'products.product.quantity.label' | t }}
       </label>
-      <quantity-input class='quantity'>
+      <quantity-input class='quantity quantity__input_full'>
         <button
           class='quantity__button no-js-hidden'
           name='minus'

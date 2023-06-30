@@ -1003,6 +1003,7 @@ class VariantSelects extends HTMLElement {
       this.toggleAddButton(true, '', true);
       this.setUnavailable();
     } else {
+      console.log('inside else');
       this.updateMedia();
       // this.updateURL();
       this.updateVariantInput();
@@ -1347,6 +1348,8 @@ customElements.define(
 
       this.formData = {
         items: [],
+        sections:
+          'cart-notification-product,cart-notification-button,cart-icon-bubble',
       };
 
       if (this.currentVariant.length <= 0) {
@@ -1363,7 +1366,6 @@ customElements.define(
         const item = {
           id: variantId,
           quantity: checkedQuantity,
-          // sections: ['cart-notification-button', 'cart-icon-bubble'],
         };
         this.formData.items.push(item);
       });
@@ -1385,19 +1387,30 @@ customElements.define(
         );
 
         if (!response.ok) {
-          throw new Error('Error: ' + response.status);
+          const errorObject = await response.json();
+          console.log(errorObject);
+          throw new Error(errorObject.description);
         }
 
         let parsedStates = await response.json();
-        console.log('parsedStates', parsedStates);
+        console.log('parsedStates ', parsedStates);
+
+        for (let i = 0; i < parsedStates.items.length; i++) {
+          const parsedState = parsedStates.items[i];
+          parsedState.sections = parsedStates.sections;
+          console.log('parsedStates.items', i, parsedState);
+          if (i === parsedStates.items.length - 1)
+            this.showCartNotification(parsedState);
+        }
         // this.showCartNotification(parsedStates);
       } catch (error) {
-        console.error('Error:', error);
+        console.log(error);
+        console.error(error);
       }
     }
+
     // Function to display the cart notification
-    showCartNotification(parsedStates) {
-      console.log('inside showCartNotification', parsedStates.items);
+    async showCartNotification(parsedState) {
       // Get or create the notification element
       let notification = document.querySelector('cart-notification');
       if (!notification) {
@@ -1405,9 +1418,7 @@ customElements.define(
         document.body.appendChild(notification);
       }
 
-      parsedStates.items.forEach(async (parsedState) => {
-        await notification.renderContents(parsedState);
-      });
+      await notification.renderContents(parsedState);
     }
   }
 );
