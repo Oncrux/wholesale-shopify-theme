@@ -292,7 +292,6 @@
       role='main'
       tabindex='-1'
     >
-      {{ template }}
       {%- if customer
         or request.path == '/challenge'
         or request.path == routes.account_register_url

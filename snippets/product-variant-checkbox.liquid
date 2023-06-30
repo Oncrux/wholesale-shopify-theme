@@ -1,0 +1,178 @@
+{% comment %}
+  Renders product variant-picker
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+  - update_url: {Boolean} whether or not to update url when changing variants. If false, the url isn't updated. Default: true (optional).
+  Usage:
+  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+{% endcomment %}
+
+{% # theme-check-disable UndefinedObject %}
+
+{%- unless product.has_only_default_variant -%}
+  <variant-checkboxes
+    id='variant-checkboxes-{{ section.id }}'
+    class='no-js-hidden product-form__input product-form__checkbox checkbox-center'
+    data-section='{{ section.id }}'
+    data-url='{{ product.url }}'
+    {% if update_url == false %}
+      data-update-url='false'
+    {% endif %}
+    {{ block.shopify_attributes }}
+  >
+    {%- for option in product.options_with_values -%}
+      <fieldset class='product-form__input'>
+        <legend class='form__label'>{{ option.name }}</legend>
+        {% comment %}
+          where product-variant-picker.liquid
+          would render product-variant-options
+        {% endcomment %}
+        {%- for value in option.values -%}
+          <div class='checkbox'>
+            <input
+              type='checkbox'
+              id='{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}'
+              name='{{ option.name }}'
+              value='{{ value | escape }}'
+              form='{{ product_form_id }}'
+              {%- liquid
+                for variant in product.variants
+                  if variant.option1 == value
+                    if variant.available
+                      assign option_disabled = false
+                    else
+                      assign option_disabled = true
+                    endif
+                    if variant.inventory_quantity <= 20
+                      assign option_low_stock = true
+                      assign static_low_stock_amount = variant.inventory_quantity
+                    else
+                      assign option_low_stock = false
+                    endif
+                  endif
+                endfor
+              -%}
+              {% if option_disabled %}
+                disabled
+              {% endif %}
+            >
+            <label
+              for='{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}'
+            >
+              {{- value -}}
+              {%- if option_low_stock -%}
+                {%- if static_low_stock_amount > 0 -%}
+                  <div>
+                    <span>low stock:</span>
+                    <span>{{ static_low_stock_amount }}!</span>
+                  </div>
+                {%- else -%}
+                  <div>
+                    <span>out of stock</span>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            </label>
+          </div>
+        {%- endfor -%}
+      </fieldset>
+
+      <script type='application/json'>
+        {{ product.variants | json }}
+      </script>
+    {%- endfor -%}
+    <div class='product-form__input product-form__quantity quantity-center'>
+      <label class='form__label' for='Quantity-{{ section.id }}'>
+        {{ 'products.product.quantity.label' | t }}
+      </label>
+      <quantity-input class='quantity quantity__input_full'>
+        <button
+          class='quantity__button no-js-hidden'
+          name='minus'
+          type='button'
+        >
+          <span class='visually-hidden'>
+            {{-
+              'products.product.quantity.decrease'
+              | t: product: product.title
+              | escape
+            -}}
+          </span>
+          {% render 'icon-minus' %}
+        </button>
+        <input
+          class='quantity__input '
+          type='number'
+          name='quantity'
+          id='Quantity-{{ section.id }}'
+          min='1'
+          value='1'
+          form='{{ product_form_id }}'
+        >
+        <button
+          class='quantity__button no-js-hidden'
+          name='plus'
+          type='button'
+        >
+          <span class='visually-hidden'>
+            {{-
+              'products.product.quantity.increase'
+              | t: product: product.title
+              | escape
+            -}}
+          </span>
+          {% render 'icon-plus' %}
+        </button>
+      </quantity-input>
+    </div>
+    <input
+      type='hidden'
+      name='id'
+      value='{{ product.selected_or_first_available_variant.id }}'
+      disabled
+    >
+    <button
+      id='{{ product_form_id }}-submit'
+      type='submit'
+      name='add'
+      class='quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}'
+      aria-haspopup='dialog'
+      aria-labelledby='{{ product_form_id }}-submit title-{{ section_id }}-{{ product.id }}'
+      aria-live='polite'
+      data-sold-out-message='true'
+      {% if product.selected_or_first_available_variant.available == false %}
+        disabled
+      {% endif %}
+    >
+      <span>
+        {%- if product.selected_or_first_available_variant.available -%}
+          {{ 'products.product.add_to_cart' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </span>
+      <span class='sold-out-message hidden'>
+        {{ 'products.product.sold_out' | t }}
+      </span>
+      {%- if horizontal_quick_add -%}
+        <span class='icon-wrap'>{% render 'icon-plus' %}</span>
+      {%- endif -%}
+      <div class='loading-overlay__spinner hidden'>
+        <svg
+          aria-hidden='true'
+          focusable='false'
+          class='spinner'
+          viewBox='0 0 66 66'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+        </svg>
+      </div>
+    </button>
+  </variant-checkboxes>
+{%- endunless -%}
+
+{% # theme-check-enable UndefinedObject %}
