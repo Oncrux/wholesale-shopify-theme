@@ -30,7 +30,6 @@
     },
     "featured-collection": {
       "type": "featured-collection",
-      "disabled": true,
       "settings": {
         "title": "YOU MAY ALSO LIKE",
         "heading_size": "h1",
