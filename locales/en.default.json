@@ -429,6 +429,8 @@
       "first_name": "First name",
       "last_name": "Last name",
       "company": "Business name",
+      "business_address": "Business address",
+      "resale_license_number": "Resale license number",
       "email": "Email",
       "password": "Password",
       "submit": "Create"
