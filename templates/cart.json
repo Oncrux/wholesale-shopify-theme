@@ -30,6 +30,7 @@
     },
     "featured-collection": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "title": "YOU MAY ALSO LIKE",
         "heading_size": "h1",
@@ -82,6 +83,7 @@
         "paragraph",
         "email-form"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "accent-1",
         "full_width": true,
