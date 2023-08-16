@@ -2283,10 +2283,12 @@ product-info .loading-overlay:not(.hidden) ~ *,
   padding: 0;
 }
 
+/*edited 2291*/
 .announcement-bar__message {
   padding: 1rem 0;
   margin: 0;
   letter-spacing: 0.1rem;
+  color: white;
 }
 
 /* section-header */
