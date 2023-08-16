@@ -22,6 +22,7 @@
       "blocks": {
         "heading": {
           "type": "heading",
+          "disabled": true,
           "settings": {
             "heading": "SUBSCRIBE TO OUR EMAILS",
             "heading_size": "h1"
@@ -29,6 +30,7 @@
         },
         "paragraph": {
           "type": "paragraph",
+          "disabled": true,
           "settings": {
             "text": "<p>Be the first to know about new collections and exclusive offers.<\/p>"
           }
@@ -44,6 +46,7 @@
         "paragraph",
         "email-form"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "accent-1",
         "full_width": true,
