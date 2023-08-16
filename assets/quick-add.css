@@ -37,7 +37,7 @@
   transform: translateX(-50%);
   margin: var(--modal-height-offset) auto 0;
   width: 100%;
-  background-color: rgb(var(--color-background));
+  background-color: #E22120;
   overflow: hidden;
   max-width: var(--page-width);
   width: calc(100% - 3rem);
