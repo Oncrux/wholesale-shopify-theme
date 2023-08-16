@@ -6,13 +6,13 @@
     "colors_solid_button_labels": "#1f1f21",
     "colors_accent_1": "#e22120",
     "gradient_accent_1": "",
-    "colors_accent_2": "#ffffff",
+    "colors_accent_2": "#e22120",
     "gradient_accent_2": "",
     "colors_text": "#000000",
     "colors_outline_button_labels": "#e22120",
     "colors_background_1": "#ffffff",
     "gradient_background_1": "",
-    "colors_background_2": "#fafafa",
+    "colors_background_2": "#ffffff",
     "gradient_background_2": "",
     "type_header_font": "poppins_n5",
     "heading_scale": 140,
@@ -46,7 +46,7 @@
     "card_style": "card",
     "card_image_padding": 0,
     "card_text_alignment": "left",
-    "card_color_scheme": "background-2",
+    "card_color_scheme": "background-1",
     "card_border_thickness": 0,
     "card_border_opacity": 10,
     "card_corner_radius": 0,
@@ -87,7 +87,7 @@
     "sold_out_badge_color_scheme": "background-1",
     "accent_icons": "text",
     "social_facebook_link": "",
-    "social_instagram_link": "",
+    "social_instagram_link": "http:\/\/instagram.com\/oncrux_official",
     "social_youtube_link": "",
     "social_tiktok_link": "",
     "social_twitter_link": "",
@@ -159,6 +159,13 @@
         "type": "main-password-footer",
         "settings": {
           "color_scheme": "background-1"
+        }
+      },
+      "main-login": {
+        "type": "main-login",
+        "settings": {
+          "padding_top": 36,
+          "padding_bottom": 36
         }
       }
     },
