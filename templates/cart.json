@@ -1,4 +1,5 @@
 {
+  "layout": "login-theme",
   "sections": {
     "cart-items": {
       "type": "main-cart-items",
@@ -12,21 +13,15 @@
       "blocks": {
         "subtotal": {
           "type": "subtotal",
-          "settings": {
-          }
+          "settings": {}
         },
         "buttons": {
           "type": "buttons",
-          "settings": {
-          }
+          "settings": {}
         }
       },
-      "block_order": [
-        "subtotal",
-        "buttons"
-      ],
-      "settings": {
-      }
+      "block_order": ["subtotal", "buttons"],
+      "settings": {}
     },
     "featured-collection": {
       "type": "featured-collection",
@@ -69,20 +64,15 @@
         "paragraph": {
           "type": "paragraph",
           "settings": {
-            "text": "<p>Be the first to know about new collections and exclusive offers.<\/p>"
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
           }
         },
         "email-form": {
           "type": "email_form",
-          "settings": {
-          }
+          "settings": {}
         }
       },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email-form"
-      ],
+      "block_order": ["heading", "paragraph", "email-form"],
       "disabled": true,
       "settings": {
         "color_scheme": "accent-1",
@@ -92,10 +82,5 @@
       }
     }
   },
-  "order": [
-    "cart-items",
-    "cart-footer",
-    "featured-collection",
-    "newsletter"
-  ]
+  "order": ["cart-items", "cart-footer", "featured-collection", "newsletter"]
 }
