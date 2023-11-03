@@ -1,4 +1,5 @@
 {
+  "layout": "login-theme",
   "sections": {
     "featured_collection": {
       "type": "featured-collection",
@@ -55,8 +56,5 @@
       }
     }
   },
-  "order": [
-    "featured_collection",
-    "apparel_collection"
-  ]
+  "order": ["featured_collection", "apparel_collection"]
 }
