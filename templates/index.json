@@ -1,62 +1,62 @@
 {
   "sections": {
-    "featured_collection": {
+    "a325b667-d897-4469-b7c5-cec516992fb5": {
       "type": "featured-collection",
       "settings": {
         "title": "",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
         "collection": "wholesale-collection",
-        "products_to_show": 12,
+        "products_to_show": 25,
         "columns_desktop": 5,
-        "full_width": false,
+        "full_width": true,
         "show_view_all": true,
         "view_all_style": "solid",
         "enable_desktop_slider": false,
-        "color_scheme": "background-2",
-        "image_ratio": "portrait",
-        "show_secondary_image": false,
+        "color_scheme": "background-1",
+        "image_ratio": "adapt",
+        "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "enable_quick_add": true,
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
-    "apparel_collection": {
+    "a73e65a1-3b65-4f34-997d-20110aa84a5d": {
       "type": "featured-collection",
       "settings": {
         "title": "",
-        "heading_size": "h2",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
         "collection": "apparel",
-        "products_to_show": 12,
+        "products_to_show": 25,
         "columns_desktop": 5,
-        "full_width": false,
+        "full_width": true,
         "show_view_all": true,
         "view_all_style": "solid",
         "enable_desktop_slider": false,
-        "color_scheme": "background-2",
-        "image_ratio": "portrait",
-        "show_secondary_image": false,
+        "color_scheme": "background-1",
+        "image_ratio": "adapt",
+        "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "enable_quick_add": true,
         "columns_mobile": "2",
         "swipe_on_mobile": false,
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
-    "featured_collection",
-    "apparel_collection"
+    "a325b667-d897-4469-b7c5-cec516992fb5",
+    "a73e65a1-3b65-4f34-997d-20110aa84a5d"
   ]
 }
