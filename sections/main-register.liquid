@@ -116,7 +116,6 @@
         {{ 'customer.register.resale_license_number' | t }}
       </label>
     </div>
-    <p>disclaimer placeholder</p>
     {%- if form.errors contains '' -%}
       'resale_license_number'
     {%- endif -%}
@@ -167,6 +166,15 @@
         {{ 'customer.register.password' | t }}
       </label>
     </div>
+
+    {% comment %}
+      password requirements listed from here:
+      https://help.shopify.com/en/manual/customers/customer-accounts/classic-customer-accounts#managing-classic-customer-accounts
+    {% endcomment %}
+    <p>
+      Passwords must be between 5 to 40 characters. Special characters are
+      allowed.
+    </p>
     {%- if form.errors contains 'password' -%}
       <span id='RegisterForm-password-error' class='form__message'>
         <svg aria-hidden='true' focusable='false'>
