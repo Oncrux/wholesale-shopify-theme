@@ -164,7 +164,7 @@
       "main-login": {
         "type": "main-login",
         "blocks": {
-          "c14de860-86eb-4b9d-81ae-2827c226a15e": {
+          "c0f04d2b-32a6-4518-b311-e4ec63ba4223": {
             "type": "announcement",
             "settings": {
               "text": "Welcome to our store",
@@ -174,7 +174,7 @@
           }
         },
         "block_order": [
-          "c14de860-86eb-4b9d-81ae-2827c226a15e"
+          "c0f04d2b-32a6-4518-b311-e4ec63ba4223"
         ],
         "settings": {
           "padding_top": 36,
