@@ -13,7 +13,8 @@
         },
         "title": {
           "type": "title",
-          "settings": {}
+          "settings": {
+          }
         },
         "caption": {
           "type": "text",
@@ -24,11 +25,13 @@
         },
         "product-rating": {
           "type": "rating",
-          "settings": {}
+          "settings": {
+          }
         },
         "price": {
           "type": "price",
-          "settings": {}
+          "settings": {
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -38,7 +41,8 @@
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "settings": {}
+          "settings": {
+          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -48,7 +52,8 @@
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {
+          }
         },
         "share": {
           "type": "share",
@@ -88,7 +93,7 @@
           "settings": {
             "heading": "DETAILS",
             "icon": "lightning_bolt",
-            "row_content": "<p>Provide details like specifications, materials, or measurements.</p><p>Add an image in your Collapsible content settings for more visual interest.</p>",
+            "row_content": "<p>Provide details like specifications, materials, or measurements.<\/p><p>Add an image in your Collapsible content settings for more visual interest.<\/p>",
             "page": ""
           }
         },
@@ -97,7 +102,7 @@
           "settings": {
             "heading": "TIPS",
             "icon": "check_mark",
-            "row_content": "<p>Share expert tips on how to use this product or pair it with other items.</p>",
+            "row_content": "<p>Share expert tips on how to use this product or pair it with other items.<\/p>",
             "page": ""
           }
         },
@@ -106,12 +111,16 @@
           "settings": {
             "heading": "SHIPPING",
             "icon": "truck",
-            "row_content": "<p>List the details of your shipping policy.</p>",
+            "row_content": "<p>List the details of your shipping policy.<\/p>",
             "page": ""
           }
         }
       },
-      "block_order": ["row-1", "row-2", "row-3"],
+      "block_order": [
+        "row-1",
+        "row-2",
+        "row-3"
+      ],
       "settings": {
         "caption": "",
         "heading": "",
@@ -140,15 +149,20 @@
         "paragraph": {
           "type": "paragraph",
           "settings": {
-            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+            "text": "<p>Be the first to know about new collections and exclusive offers.<\/p>"
           }
         },
         "email-form": {
           "type": "email_form",
-          "settings": {}
+          "settings": {
+          }
         }
       },
-      "block_order": ["heading", "paragraph", "email-form"],
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email-form"
+      ],
       "settings": {
         "color_scheme": "accent-1",
         "full_width": true,
@@ -174,5 +188,10 @@
       }
     }
   },
-  "order": ["main", "related-products", "collapsible-content", "newsletter"]
+  "order": [
+    "main",
+    "related-products",
+    "collapsible-content",
+    "newsletter"
+  ]
 }

@@ -163,6 +163,19 @@
       },
       "main-login": {
         "type": "main-login",
+        "blocks": {
+          "c14de860-86eb-4b9d-81ae-2827c226a15e": {
+            "type": "announcement",
+            "settings": {
+              "text": "Welcome to our store",
+              "text_alignment": "center",
+              "color_scheme": "accent-1"
+            }
+          }
+        },
+        "block_order": [
+          "c14de860-86eb-4b9d-81ae-2827c226a15e"
+        ],
         "settings": {
           "padding_top": 36,
           "padding_bottom": 36

@@ -55,7 +55,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Pair an image with text to introduce a blog post that helps your customers learn more about your products.</p>",
+            "text": "<p>Pair an image with text to introduce a blog post that helps your customers learn more about your products.<\/p>",
             "text_style": "body"
           }
         },
@@ -67,7 +67,11 @@
           }
         }
       },
-      "block_order": ["heading", "text", "button"],
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "height": "adapt",
         "desktop_image_width": "small",
@@ -94,15 +98,20 @@
         "paragraph": {
           "type": "paragraph",
           "settings": {
-            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+            "text": "<p>Be the first to know about new collections and exclusive offers.<\/p>"
           }
         },
         "email-form": {
           "type": "email_form",
-          "settings": {}
+          "settings": {
+          }
         }
       },
-      "block_order": ["heading", "paragraph", "email-form"],
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email-form"
+      ],
       "settings": {
         "color_scheme": "accent-1",
         "full_width": true,
