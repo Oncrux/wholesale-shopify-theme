@@ -1,4 +1,5 @@
 {
+  "layout": "login-theme",
   "sections": {
     "main": {
       "type": "main-search",
@@ -31,20 +32,15 @@
         "paragraph": {
           "type": "paragraph",
           "settings": {
-            "text": "<p>Be the first to know about new collections and exclusive offers.<\/p>"
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
           }
         },
         "email-form": {
           "type": "email_form",
-          "settings": {
-          }
+          "settings": {}
         }
       },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email-form"
-      ],
+      "block_order": ["heading", "paragraph", "email-form"],
       "settings": {
         "color_scheme": "accent-1",
         "full_width": true,
@@ -53,8 +49,5 @@
       }
     }
   },
-  "order": [
-    "main",
-    "newsletter"
-  ]
+  "order": ["main", "newsletter"]
 }

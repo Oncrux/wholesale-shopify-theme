@@ -96,13 +96,13 @@
     <div class='field'>
       <input
         type='text'
-        name='customer[note][BusinessAddress]'
-        id='RegisterForm-BusinessAddress'
+        name='customer[note][MainBusinessAddress]'
+        id='RegisterForm-MainBusinessAddress'
         required
-        placeholder='{{ 'customer.register.business_address' | t }}'
+        placeholder='{{ 'customer.register.main_business_address' | t }}'
       >
-      <label for='RegisterForm-BusinessAddress'>
-        {{ 'customer.register.business_address' | t }}
+      <label for='RegisterForm-MainBusinessAddress'>
+        {{ 'customer.register.main_business_address' | t }}
       </label>
     </div>
     <div class='field'>
@@ -110,13 +110,13 @@
         type='text'
         name='customer[note][ResaleLicenseNumber]'
         id='RegisterForm-ResaleLicenseNumber'
-        required
         placeholder='{{ 'customer.register.resale_license_number' | t }}'
       >
       <label for='RegisterForm-ResaleLicenseNumber'>
         {{ 'customer.register.resale_license_number' | t }}
       </label>
     </div>
+    <p>disclaimer placeholder</p>
     {%- if form.errors contains '' -%}
       'resale_license_number'
     {%- endif -%}
@@ -167,6 +167,15 @@
         {{ 'customer.register.password' | t }}
       </label>
     </div>
+
+    {% comment %}
+      password requirements listed from here:
+      https://help.shopify.com/en/manual/customers/customer-accounts/classic-customer-accounts#managing-classic-customer-accounts
+    {% endcomment %}
+    <p>
+      Passwords must be between 5 to 40 characters. Special characters are
+      allowed.
+    </p>
     {%- if form.errors contains 'password' -%}
       <span id='RegisterForm-password-error' class='form__message'>
         <svg aria-hidden='true' focusable='false'>

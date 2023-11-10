@@ -2,13 +2,22 @@
   "sections": {
     "main": {
       "type": "main-login",
+      "blocks": {
+        "announcement-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "This is a test announcement from login.json",
+            "text_alignment": "center",
+            "color_scheme": "accent-2"
+          }
+        }
+      },
+      "block_order": ["announcement-0"],
       "settings": {
         "padding_top": 36,
         "padding_bottom": 36
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }
