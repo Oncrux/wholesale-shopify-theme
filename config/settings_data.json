@@ -167,7 +167,7 @@
           "c0f04d2b-32a6-4518-b311-e4ec63ba4223": {
             "type": "announcement",
             "settings": {
-              "text": "Welcome to our store",
+              "text": "Welcome!",
               "text_alignment": "center",
               "color_scheme": "accent-1"
             }
