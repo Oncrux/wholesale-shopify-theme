@@ -16,6 +16,7 @@
       "blocks": {
         "announcement_YEjn6N": {
           "type": "announcement",
+          "disabled": true,
           "settings": {
             "text": "Due to peak season volume, please allow 2–5 additional business days for wholesale order processing.",
             "text_alignment": "center",
@@ -25,7 +26,6 @@
         },
         "announcement-bar-0": {
           "type": "announcement",
-          "disabled": true,
           "settings": {
             "text": "Free Shipping for orders over $500",
             "text_alignment": "center",
