@@ -1,0 +1,356 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{{ 'section-wholesale-signup-form.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'phone-field.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- comment -%}
+  Copy is defined here rather than in locales/ on purpose. Adding keys to
+  en.default.json alone makes theme-check raise a MatchingTranslations error for
+  every one of the ~30 other locale files; this storefront is English-only, so
+  the keys would be lint noise with no translation ever written against them.
+  If the store adds a locale, lift these into locales/ and translate them.
+{%- endcomment -%}
+{%- liquid
+  assign form_title = 'Wholesale signup form'
+  assign label_company = 'Company name'
+  assign label_first_name = 'First name'
+  assign label_last_name = 'Last name'
+  assign label_email = 'Email'
+  assign label_phone = 'Phone number'
+  assign label_phone_country = 'Country calling code'
+  assign label_website = 'Company website'
+  assign label_message = 'Message'
+  assign label_send = 'Send'
+  assign error_heading = 'Please adjust the following:'
+  assign success_message = "Thanks for your interest. We'll be in touch as soon as possible."
+-%}
+
+{%- capture default_dial_code -%}
+  {%- render 'phone-country-codes', mode: 'dial' -%}
+{%- endcapture -%}
+{%- assign default_dial_code = default_dial_code | strip -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}">
+        {{ section.settings.heading }}
+      </h2>
+    {%- else -%}
+      <h2 class="visually-hidden">{{ form_title }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <p class="wholesale-signup__subheading inline-richtext">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    {%- form 'contact', id: 'WholesaleSignupForm', class: 'isolate' -%}
+      {%- if form.posted_successfully? -%}
+        <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+          {% render 'icon-success' %}
+          {{ success_message }}
+        </h2>
+      {%- elsif form.errors -%}
+        <div class="form__message">
+          <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+            {% render 'icon-error' %}
+            {{ error_heading }}
+          </h2>
+        </div>
+        <ul class="form-status-list caption-large" role="list">
+          <li>
+            <a href="#WholesaleSignupForm-email" class="link">
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}
+            </a>
+          </li>
+        </ul>
+      {%- endif -%}
+
+      <div class="field">
+        <input
+          class="field__input"
+          autocomplete="organization"
+          type="text"
+          id="WholesaleSignupForm-company"
+          name="contact[Company name]"
+          required
+          aria-required="true"
+          placeholder="{{ label_company }}"
+        >
+        <label class="field__label" for="WholesaleSignupForm-company">
+          {{- label_company }}
+          <span aria-hidden="true">*</span></label
+        >
+      </div>
+
+      <div class="contact__fields">
+        <div class="field">
+          <input
+            class="field__input"
+            autocomplete="given-name"
+            type="text"
+            id="WholesaleSignupForm-first-name"
+            name="contact[First name]"
+            value="{% if customer %}{{ customer.first_name }}{% endif %}"
+            required
+            aria-required="true"
+            placeholder="{{ label_first_name }}"
+          >
+          <label class="field__label" for="WholesaleSignupForm-first-name">
+            {{- label_first_name }}
+            <span aria-hidden="true">*</span></label
+          >
+        </div>
+        <div class="field">
+          <input
+            class="field__input"
+            autocomplete="family-name"
+            type="text"
+            id="WholesaleSignupForm-last-name"
+            name="contact[Last name]"
+            value="{% if customer %}{{ customer.last_name }}{% endif %}"
+            required
+            aria-required="true"
+            placeholder="{{ label_last_name }}"
+          >
+          <label class="field__label" for="WholesaleSignupForm-last-name">
+            {{- label_last_name }}
+            <span aria-hidden="true">*</span></label
+          >
+        </div>
+      </div>
+
+      <div class="field field--with-error">
+        <input
+          autocomplete="email"
+          type="email"
+          id="WholesaleSignupForm-email"
+          class="field__input"
+          name="contact[email]"
+          spellcheck="false"
+          autocapitalize="off"
+          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          required
+          aria-required="true"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="WholesaleSignupForm-email-error"
+          {% endif %}
+          placeholder="{{ label_email }}"
+        >
+        <label class="field__label" for="WholesaleSignupForm-email">
+          {{- label_email }}
+          <span aria-hidden="true">*</span></label
+        >
+        {%- if form.errors contains 'email' -%}
+          <small class="contact__field-error" id="WholesaleSignupForm-email-error">
+            <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+            <span class="form__message">
+              {%- render 'icon-error' -%}
+              {{- form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email -}}
+            </span>
+          </small>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%}
+        The dial-code select carries no name — it only drives the tel input, which
+        is pre-filled server-side so the field still posts a usable value with
+        JavaScript disabled.
+      {%- endcomment -%}
+      <phone-field class="wholesale-signup__phone">
+        <div class="select">
+          <label class="visually-hidden" for="WholesaleSignupForm-phone-country">
+            {{ label_phone_country }}
+          </label>
+          <select
+            id="WholesaleSignupForm-phone-country"
+            class="select__select"
+            data-phone-country
+          >
+            {% render 'phone-country-codes' %}
+          </select>
+          {% render 'icon-caret' %}
+        </div>
+        <div class="field">
+          <input
+            type="tel"
+            id="WholesaleSignupForm-phone"
+            class="field__input"
+            autocomplete="tel"
+            inputmode="tel"
+            name="contact[Phone]"
+            value="{% if customer.phone != blank %}{{ customer.phone }}{% else %}{{ default_dial_code }}{% endif %}"
+            required
+            aria-required="true"
+            data-phone-number
+            placeholder="{{ label_phone }}"
+          >
+          <label class="field__label" for="WholesaleSignupForm-phone">
+            {{- label_phone }}
+            <span aria-hidden="true">*</span></label
+          >
+        </div>
+      </phone-field>
+
+      <div class="field">
+        {%- comment -%}
+          Deliberately type="text", not type="url": visitors rarely type the
+          https:// scheme (or www.) that url validation demands, and this field
+          is optional — a bare "example.com" must not block submission. The value
+          is only read by a human in the notification email.
+        {%- endcomment -%}
+        <input
+          class="field__input"
+          autocomplete="url"
+          type="text"
+          inputmode="url"
+          id="WholesaleSignupForm-website"
+          name="contact[Company website]"
+          placeholder="{{ label_website }}"
+        >
+        <label class="field__label" for="WholesaleSignupForm-website">
+          {{- label_website -}}
+        </label>
+      </div>
+
+      <div class="field">
+        <textarea
+          rows="8"
+          id="WholesaleSignupForm-body"
+          class="text-area field__input"
+          name="contact[Message]"
+          placeholder="{{ label_message }}"
+        >
+          {{- form.body -}}
+        </textarea>
+        <label class="form__label field__label" for="WholesaleSignupForm-body">
+          {{- label_message -}}
+        </label>
+      </div>
+
+      <div class="contact__button">
+        <button type="submit" class="button">
+          {{ label_send }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Wholesale signup form",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Looking to become an Oncrux wholesale partner?",
+      "label": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "default": "Submit the form below and we'll reach out as soon as possible.",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wholesale signup form"
+    }
+  ]
+}
+{% endschema %}
