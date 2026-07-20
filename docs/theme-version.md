@@ -4,8 +4,10 @@ _Last checked: 2026-07-20_
 
 ## What this theme is
 
-This repo is Shopify's free **Ride** theme, synced from the Shopify admin
-(commits read `Update from Shopify for theme wholesale-shopify-theme/main`).
+This repo is Shopify's free **Ride** theme. For how the repo syncs with the
+admin and how branches are used, see
+[README → How is the Repo structured](../README.md#how-is-the-repo-structured)
+— this doc only covers versions.
 
 Source of truth for the local version is `config/settings_schema.json`:
 
