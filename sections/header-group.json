@@ -14,6 +14,16 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_YEjn6N": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Due to peak season volume, please allow 2–5 additional business days for wholesale order processing.",
+            "text_alignment": "center",
+            "color_scheme": "accent-1",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -25,6 +35,7 @@
         }
       },
       "block_order": [
+        "announcement_YEjn6N",
         "announcement-bar-0"
       ],
       "settings": {}
