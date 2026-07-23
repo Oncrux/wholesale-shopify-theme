@@ -103,7 +103,7 @@
     {%- endif -%}
     {%- form 'customer_login',
       novalidate: 'novalidate',
-      return_to: routes.root_url
+      return_to: request.path
     -%}
       {%- if form.errors -%}
         <h2 class='form__message' tabindex='-1' autofocus>
