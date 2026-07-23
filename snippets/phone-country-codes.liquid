@@ -1,0 +1,65 @@
+{% comment %}
+  Country calling codes for phone inputs.
+
+  Renders either the <option> tags for a calling-code selector, or just the dial
+  code of the resolved country so a tel input can be pre-filled server-side (and
+  therefore still works with JavaScript disabled).
+
+  Accepts:
+  - mode: {String} 'options' (default) renders <option> tags, 'dial' renders only
+    the resolved dial code (e.g. "+1") with no surrounding markup.
+  - selected_iso: {String} ISO code of the country to resolve to. Falls back to
+    the storefront's active country, then to US.
+
+  Usage:
+  <select ...>
+    {% render 'phone-country-codes' %}
+  </select>
+
+  {%- capture default_dial -%}
+    {% render 'phone-country-codes', mode: 'dial' %}
+  {%- endcapture -%}
+{% endcomment %}
+
+{%- liquid
+  assign requested_iso = selected_iso | default: localization.country.iso_code | upcase
+
+  comment
+    Each row is "ISO|Country name|dial code|flag". Scoped to the markets we ship
+    to rather than every calling code — add rows here as markets are added.
+  endcomment
+  assign country_rows = 'US|United States|+1|🇺🇸,CA|Canada|+1|🇨🇦,GB|United Kingdom|+44|🇬🇧,IE|Ireland|+353|🇮🇪,AU|Australia|+61|🇦🇺,NZ|New Zealand|+64|🇳🇿,DE|Germany|+49|🇩🇪,FR|France|+33|🇫🇷,ES|Spain|+34|🇪🇸,IT|Italy|+39|🇮🇹,NL|Netherlands|+31|🇳🇱,BE|Belgium|+32|🇧🇪,AT|Austria|+43|🇦🇹,CH|Switzerland|+41|🇨🇭,SE|Sweden|+46|🇸🇪,NO|Norway|+47|🇳🇴,DK|Denmark|+45|🇩🇰,FI|Finland|+358|🇫🇮,PL|Poland|+48|🇵🇱,CZ|Czechia|+420|🇨🇿,PT|Portugal|+351|🇵🇹,JP|Japan|+81|🇯🇵,KR|South Korea|+82|🇰🇷,SG|Singapore|+65|🇸🇬,MX|Mexico|+52|🇲🇽,BR|Brazil|+55|🇧🇷,ZA|South Africa|+27|🇿🇦' | split: ','
+
+  assign resolved_iso = 'US'
+  for row in country_rows
+    assign row_iso = row | split: '|' | first
+    if row_iso == requested_iso
+      assign resolved_iso = requested_iso
+      break
+    endif
+  endfor
+-%}
+
+{%- if mode == 'dial' -%}
+  {%- for row in country_rows -%}
+    {%- assign parts = row | split: '|' -%}
+    {%- if parts[0] == resolved_iso -%}{{ parts[2] }}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- for row in country_rows -%}
+    {%- liquid
+      assign parts = row | split: '|'
+      assign row_iso = parts[0]
+      assign row_name = parts[1]
+      assign row_dial = parts[2]
+      assign row_flag = parts[3]
+    -%}
+    <option
+      value="{{ row_dial }}"
+      data-country-iso="{{ row_iso }}"
+      {% if row_iso == resolved_iso %}selected{% endif %}
+    >
+      {{ row_flag }} {{ row_name }} ({{ row_dial }})
+    </option>
+  {%- endfor -%}
+{%- endif -%}

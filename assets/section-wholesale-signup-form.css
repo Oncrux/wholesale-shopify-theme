@@ -1,0 +1,35 @@
+.wholesale-signup__subheading {
+  margin: 0 0 3rem;
+}
+
+.wholesale-signup__phone {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.wholesale-signup__phone .select {
+  flex: 0 0 auto;
+  width: 13rem;
+}
+
+.wholesale-signup__phone .field {
+  flex: 1 1 auto;
+}
+
+/* The dial-code select sits next to the number input, so its own bottom margin
+   would double up with the one .contact .field already applies to the row. */
+.contact .wholesale-signup__phone .field {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .wholesale-signup__phone .select {
+    width: 10rem;
+  }
+
+  .wholesale-signup__phone .select__select {
+    padding-left: 1rem;
+    padding-right: calc(var(--inputs-border-width) + 2rem);
+  }
+}
