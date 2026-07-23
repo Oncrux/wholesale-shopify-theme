@@ -17,10 +17,12 @@
   flex: 1 1 auto;
 }
 
-/* The dial-code select sits next to the number input, so its own bottom margin
-   would double up with the one .contact .field already applies to the row. */
-.contact .wholesale-signup__phone .field {
-  margin-bottom: 0;
+/* The base .select__select is only 1.2rem, so on desktop the native dropdown's
+   option list renders at that small size next to the 1.6rem inputs. Match the
+   adjacent fields so the country list is comfortably legible. (Real mobile
+   browsers ignore this and use their own native picker sizing.) */
+.wholesale-signup__phone .select__select {
+  font-size: 1.6rem;
 }
 
 @media screen and (max-width: 749px) {
