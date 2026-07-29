@@ -9,6 +9,12 @@
   - autocomplete_section: 'shipping' or 'billing', the autocomplete section token.
   - heading: legend text.
   - show_attention: render the optional "Company / attention" line.
+  - toggle_label / toggle_name: render a checked checkbox between the legend and
+    the fields, e.g. "Same as shipping address". Its name is what the notification
+    email shows when it stays checked.
+  - is_collapsed: hide the fields and disable every control in them. Disabled
+    controls are left out of both validation and submission, so a required field
+    can never invisibly block submit while it's out of sight.
 
   State/province is a plain text input rather than a dropdown driven by the
   country. Shopify only has province data for ~50 of ~250 countries, so most
@@ -45,116 +51,159 @@
 <fieldset class="wholesale-signup__address">
   <legend class="wholesale-signup__address-heading">{{ heading }}</legend>
 
-  <div class="select">
-    <label class="visually-hidden" for="{{ id_prefix }}-country">
-      {{ label_country }}
-    </label>
-    <select
-      id="{{ id_prefix }}-country"
-      class="select__select"
-      name="contact[{{ kind }} country]"
-      autocomplete="{{ autocomplete_section }} country-name"
-      data-default="{{ localization.country.name }}"
-      required
-      aria-required="true"
-    >
-      {{ all_country_option_tags }}
-    </select>
-    {% render 'icon-caret' %}
-  </div>
-
-  {%- if show_attention -%}
-    <div class="field">
+  {%- if toggle_label != blank -%}
+    <div class="wholesale-signup__checkbox">
       <input
-        class="field__input"
-        autocomplete="{{ autocomplete_section }} organization"
-        type="text"
-        id="{{ id_prefix }}-attention"
-        name="contact[{{ kind }} attention]"
-        placeholder="{{ label_attention }}"
+        type="checkbox"
+        id="{{ id_prefix }}-same-as"
+        name="{{ toggle_name }}"
+        value="Yes"
+        checked
+        data-address-toggle
       >
-      <label class="field__label" for="{{ id_prefix }}-attention">
-        {{- label_attention -}}
-      </label>
+      <label for="{{ id_prefix }}-same-as">{{ toggle_label }}</label>
     </div>
   {%- endif -%}
 
-  <div class="field">
-    <input
-      class="field__input"
-      autocomplete="{{ autocomplete_section }} address-line1"
-      type="text"
-      id="{{ id_prefix }}-address1"
-      name="contact[{{ kind }} address]"
-      required
-      aria-required="true"
-      placeholder="{{ label_address1 }}"
-    >
-    <label class="field__label" for="{{ id_prefix }}-address1">
-      {{- label_address1 }}
-      <span aria-hidden="true">*</span></label
-    >
-  </div>
+  <div
+    class="wholesale-signup__address-fields"
+    data-address-fields
+    {% if is_collapsed %}
+      hidden
+    {% endif %}
+  >
+    <div class="select">
+      <label class="visually-hidden" for="{{ id_prefix }}-country">
+        {{ label_country }}
+      </label>
+      <select
+        id="{{ id_prefix }}-country"
+        class="select__select"
+        name="contact[{{ kind }} country]"
+        autocomplete="{{ autocomplete_section }} country-name"
+        data-default="{{ localization.country.name }}"
+        required
+        aria-required="true"
+        {% if is_collapsed %}
+          disabled
+        {% endif %}
+      >
+        {{ all_country_option_tags }}
+      </select>
+      {% render 'icon-caret' %}
+    </div>
 
-  <div class="field">
-    <input
-      class="field__input"
-      autocomplete="{{ autocomplete_section }} address-line2"
-      type="text"
-      id="{{ id_prefix }}-address2"
-      name="contact[{{ kind }} apartment or suite]"
-      placeholder="{{ label_address2 }}"
-    >
-    <label class="field__label" for="{{ id_prefix }}-address2">
-      {{- label_address2 -}}
-    </label>
-  </div>
+    {%- if show_attention -%}
+      <div class="field">
+        <input
+          class="field__input"
+          autocomplete="{{ autocomplete_section }} organization"
+          type="text"
+          id="{{ id_prefix }}-attention"
+          name="contact[{{ kind }} attention]"
+          placeholder="{{ label_attention }}"
+          {% if is_collapsed %}
+            disabled
+          {% endif %}
+        >
+        <label class="field__label" for="{{ id_prefix }}-attention">
+          {{- label_attention -}}
+        </label>
+      </div>
+    {%- endif -%}
 
-  <div class="wholesale-signup__address-row">
     <div class="field">
       <input
         class="field__input"
-        autocomplete="{{ autocomplete_section }} address-level2"
+        autocomplete="{{ autocomplete_section }} address-line1"
         type="text"
-        id="{{ id_prefix }}-city"
-        name="contact[{{ kind }} city]"
+        id="{{ id_prefix }}-address1"
+        name="contact[{{ kind }} address]"
         required
         aria-required="true"
-        placeholder="{{ label_city }}"
+        placeholder="{{ label_address1 }}"
+        {% if is_collapsed %}
+          disabled
+        {% endif %}
       >
-      <label class="field__label" for="{{ id_prefix }}-city">
-        {{- label_city }}
+      <label class="field__label" for="{{ id_prefix }}-address1">
+        {{- label_address1 }}
         <span aria-hidden="true">*</span></label
       >
     </div>
+
     <div class="field">
       <input
         class="field__input"
-        autocomplete="{{ autocomplete_section }} address-level1"
+        autocomplete="{{ autocomplete_section }} address-line2"
         type="text"
-        id="{{ id_prefix }}-province"
-        name="contact[{{ kind }} state or province]"
-        placeholder="{{ label_province }}"
+        id="{{ id_prefix }}-address2"
+        name="contact[{{ kind }} apartment or suite]"
+        placeholder="{{ label_address2 }}"
+        {% if is_collapsed %}
+          disabled
+        {% endif %}
       >
-      <label class="field__label" for="{{ id_prefix }}-province">
-        {{- label_province -}}
+      <label class="field__label" for="{{ id_prefix }}-address2">
+        {{- label_address2 -}}
       </label>
     </div>
-    <div class="field">
-      <input
-        class="field__input"
-        autocomplete="{{ autocomplete_section }} postal-code"
-        type="text"
-        id="{{ id_prefix }}-zip"
-        name="contact[{{ kind }} ZIP or postal code]"
-        required
-        aria-required="true"
-        placeholder="{{ label_zip }}"
-      >
-      <label class="field__label" for="{{ id_prefix }}-zip">
-        {{- label_zip }}
-        <span aria-hidden="true">*</span></label
-      >
+
+    <div class="wholesale-signup__address-row">
+      <div class="field">
+        <input
+          class="field__input"
+          autocomplete="{{ autocomplete_section }} address-level2"
+          type="text"
+          id="{{ id_prefix }}-city"
+          name="contact[{{ kind }} city]"
+          required
+          aria-required="true"
+          placeholder="{{ label_city }}"
+          {% if is_collapsed %}
+            disabled
+          {% endif %}
+        >
+        <label class="field__label" for="{{ id_prefix }}-city">
+          {{- label_city }}
+          <span aria-hidden="true">*</span></label
+        >
+      </div>
+      <div class="field">
+        <input
+          class="field__input"
+          autocomplete="{{ autocomplete_section }} address-level1"
+          type="text"
+          id="{{ id_prefix }}-province"
+          name="contact[{{ kind }} state or province]"
+          placeholder="{{ label_province }}"
+          {% if is_collapsed %}
+            disabled
+          {% endif %}
+        >
+        <label class="field__label" for="{{ id_prefix }}-province">
+          {{- label_province -}}
+        </label>
+      </div>
+      <div class="field">
+        <input
+          class="field__input"
+          autocomplete="{{ autocomplete_section }} postal-code"
+          type="text"
+          id="{{ id_prefix }}-zip"
+          name="contact[{{ kind }} ZIP or postal code]"
+          required
+          aria-required="true"
+          placeholder="{{ label_zip }}"
+          {% if is_collapsed %}
+            disabled
+          {% endif %}
+        >
+        <label class="field__label" for="{{ id_prefix }}-zip">
+          {{- label_zip }}
+          <span aria-hidden="true">*</span></label
+        >
+      </div>
     </div>
   </div>
 </fieldset>

@@ -54,6 +54,34 @@
   margin-bottom: 1.5rem;
 }
 
+wholesale-billing-address {
+  display: block;
+}
+
+/* Ride's nicer custom checkbox lives in section-main-product.css, which this page
+   doesn't load, so this is the native control sized up to sit with 1.6rem type. */
+.wholesale-signup__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.wholesale-signup__checkbox input[type='checkbox'] {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0;
+}
+
+/* Field-text size, not the 1.4rem of the legend above it: this is a control the
+   visitor acts on, and it shouldn't compete with the group heading. */
+.wholesale-signup__checkbox label {
+  cursor: pointer;
+  font-size: 1.6rem;
+  letter-spacing: 0.04rem;
+}
+
 .wholesale-signup__address-row {
   display: flex;
   align-items: flex-start;
@@ -67,7 +95,8 @@
 }
 
 @media screen and (min-width: 750px) {
-  .wholesale-signup__address .select {
+  .wholesale-signup__address .select,
+  .wholesale-signup__checkbox {
     margin-bottom: 2rem;
   }
 }

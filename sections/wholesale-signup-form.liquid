@@ -1,6 +1,7 @@
 {{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
 {{ 'section-wholesale-signup-form.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'phone-field.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'wholesale-billing-address.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -33,6 +34,8 @@
   assign label_phone_country = 'Country calling code'
   assign label_website = 'Company website'
   assign label_shipping_address = 'Company shipping address'
+  assign label_billing_address = 'Company billing address'
+  assign label_same_as_shipping = 'Same as shipping address'
   assign label_message = 'Message'
   assign label_send = 'Send'
   assign error_heading = 'Please adjust the following:'
@@ -237,6 +240,18 @@
         heading: label_shipping_address,
         show_attention: true
       %}
+
+      <wholesale-billing-address>
+        {% render 'wholesale-address-fields',
+          kind: 'Billing',
+          id_prefix: 'WholesaleSignupForm-billing',
+          autocomplete_section: 'billing',
+          heading: label_billing_address,
+          toggle_label: label_same_as_shipping,
+          toggle_name: 'contact[Billing address same as shipping]',
+          is_collapsed: true
+        %}
+      </wholesale-billing-address>
 
       <div class="field">
         <textarea
