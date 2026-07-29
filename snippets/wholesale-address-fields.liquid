@@ -1,0 +1,160 @@
+{%- comment -%}
+  Renders one address fieldset for the wholesale signup form.
+
+  Accepts:
+  - kind: 'Shipping' or 'Billing'. Prefixes the contact-form field names, so the
+    notification email labels each line ("Shipping city", "Billing city") and the
+    two blocks can never collide.
+  - id_prefix: id stem for every control, e.g. 'WholesaleSignupForm-shipping'.
+  - autocomplete_section: 'shipping' or 'billing', the autocomplete section token.
+  - heading: legend text.
+  - show_attention: render the optional "Company / attention" line.
+
+  State/province is a plain text input rather than a dropdown driven by the
+  country. Shopify only has province data for ~50 of ~250 countries, so most
+  visitors would never see the dropdown, and the value is only ever read by a
+  human in the notification email, where "CA" is as useful as "California".
+  Driving it off the country needs JavaScript, which needs the field to start
+  hidden so it can't post an empty value without it — a lot of moving parts for
+  no gain here. Deferred to ENG-119.
+
+  Usage:
+    {% render 'wholesale-address-fields',
+      kind: 'Shipping',
+      id_prefix: 'WholesaleSignupForm-shipping',
+      autocomplete_section: 'shipping',
+      heading: 'Company shipping address',
+      show_attention: true
+    %}
+{%- endcomment -%}
+
+{%- comment -%}
+  Copy lives here rather than in locales/ for the same reason as the parent
+  section: see the comment at the top of sections/wholesale-signup-form.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign label_country = 'Country/region'
+  assign label_attention = 'Company / attention'
+  assign label_address1 = 'Address'
+  assign label_address2 = 'Apartment, suite, etc.'
+  assign label_city = 'City'
+  assign label_province = 'State / province'
+  assign label_zip = 'ZIP / postal code'
+-%}
+
+<fieldset class="wholesale-signup__address">
+  <legend class="wholesale-signup__address-heading">{{ heading }}</legend>
+
+  <div class="select">
+    <label class="visually-hidden" for="{{ id_prefix }}-country">
+      {{ label_country }}
+    </label>
+    <select
+      id="{{ id_prefix }}-country"
+      class="select__select"
+      name="contact[{{ kind }} country]"
+      autocomplete="{{ autocomplete_section }} country-name"
+      data-default="{{ localization.country.name }}"
+      required
+      aria-required="true"
+    >
+      {{ all_country_option_tags }}
+    </select>
+    {% render 'icon-caret' %}
+  </div>
+
+  {%- if show_attention -%}
+    <div class="field">
+      <input
+        class="field__input"
+        autocomplete="{{ autocomplete_section }} organization"
+        type="text"
+        id="{{ id_prefix }}-attention"
+        name="contact[{{ kind }} attention]"
+        placeholder="{{ label_attention }}"
+      >
+      <label class="field__label" for="{{ id_prefix }}-attention">
+        {{- label_attention -}}
+      </label>
+    </div>
+  {%- endif -%}
+
+  <div class="field">
+    <input
+      class="field__input"
+      autocomplete="{{ autocomplete_section }} address-line1"
+      type="text"
+      id="{{ id_prefix }}-address1"
+      name="contact[{{ kind }} address]"
+      required
+      aria-required="true"
+      placeholder="{{ label_address1 }}"
+    >
+    <label class="field__label" for="{{ id_prefix }}-address1">
+      {{- label_address1 }}
+      <span aria-hidden="true">*</span></label
+    >
+  </div>
+
+  <div class="field">
+    <input
+      class="field__input"
+      autocomplete="{{ autocomplete_section }} address-line2"
+      type="text"
+      id="{{ id_prefix }}-address2"
+      name="contact[{{ kind }} apartment or suite]"
+      placeholder="{{ label_address2 }}"
+    >
+    <label class="field__label" for="{{ id_prefix }}-address2">
+      {{- label_address2 -}}
+    </label>
+  </div>
+
+  <div class="wholesale-signup__address-row">
+    <div class="field">
+      <input
+        class="field__input"
+        autocomplete="{{ autocomplete_section }} address-level2"
+        type="text"
+        id="{{ id_prefix }}-city"
+        name="contact[{{ kind }} city]"
+        required
+        aria-required="true"
+        placeholder="{{ label_city }}"
+      >
+      <label class="field__label" for="{{ id_prefix }}-city">
+        {{- label_city }}
+        <span aria-hidden="true">*</span></label
+      >
+    </div>
+    <div class="field">
+      <input
+        class="field__input"
+        autocomplete="{{ autocomplete_section }} address-level1"
+        type="text"
+        id="{{ id_prefix }}-province"
+        name="contact[{{ kind }} state or province]"
+        placeholder="{{ label_province }}"
+      >
+      <label class="field__label" for="{{ id_prefix }}-province">
+        {{- label_province -}}
+      </label>
+    </div>
+    <div class="field">
+      <input
+        class="field__input"
+        autocomplete="{{ autocomplete_section }} postal-code"
+        type="text"
+        id="{{ id_prefix }}-zip"
+        name="contact[{{ kind }} ZIP or postal code]"
+        required
+        aria-required="true"
+        placeholder="{{ label_zip }}"
+      >
+      <label class="field__label" for="{{ id_prefix }}-zip">
+        {{- label_zip }}
+        <span aria-hidden="true">*</span></label
+      >
+    </div>
+  </div>
+</fieldset>

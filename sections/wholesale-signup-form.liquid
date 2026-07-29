@@ -32,6 +32,7 @@
   assign label_phone = 'Phone number'
   assign label_phone_country = 'Country calling code'
   assign label_website = 'Company website'
+  assign label_shipping_address = 'Company shipping address'
   assign label_message = 'Message'
   assign label_send = 'Send'
   assign error_heading = 'Please adjust the following:'
@@ -228,6 +229,14 @@
           {{- label_website -}}
         </label>
       </div>
+
+      {% render 'wholesale-address-fields',
+        kind: 'Shipping',
+        id_prefix: 'WholesaleSignupForm-shipping',
+        autocomplete_section: 'shipping',
+        heading: label_shipping_address,
+        show_attention: true
+      %}
 
       <div class="field">
         <textarea
