@@ -19,10 +19,86 @@
 
 /* The base .select__select is only 1.2rem, so on desktop the native dropdown's
    option list renders at that small size next to the 1.6rem inputs. Match the
-   adjacent fields so the country list is comfortably legible. (Real mobile
-   browsers ignore this and use their own native picker sizing.) */
-.wholesale-signup__phone .select__select {
+   adjacent fields so the country and province lists are comfortably legible.
+   (Real mobile browsers ignore this and use their own native picker sizing.) */
+.wholesale-signup__phone .select__select,
+.wholesale-signup__address .select__select {
   font-size: 1.6rem;
+}
+
+/* Fieldsets default to min-inline-size: min-content, which stops the flex row
+   below from shrinking on narrow viewports. */
+.wholesale-signup__address {
+  border: 0;
+  /* Space above the legend so it reads as the start of a new group rather than
+     another line in the run of fields above. Has to be margin rather than padding
+     — a legend is laid out on the fieldset's top border edge, outside its padding
+     box — and has to exceed the 2rem `.contact .field` margin-bottom it collapses
+     against, since collapsed margins take the larger of the two. */
+  margin: 3.2rem 0 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.wholesale-signup__address-heading {
+  display: block;
+  padding: 0;
+  margin: 0 0 1.2rem;
+  font-size: 1.4rem;
+  letter-spacing: 0.04rem;
+}
+
+/* Selects don't pick up the shared `.contact .field` margin, so match it here to
+   keep the vertical rhythm of the form. */
+.wholesale-signup__address .select {
+  margin-bottom: 1.5rem;
+}
+
+wholesale-billing-address {
+  display: block;
+}
+
+/* Ride's nicer custom checkbox lives in section-main-product.css, which this page
+   doesn't load, so this is the native control sized up to sit with 1.6rem type. */
+.wholesale-signup__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.wholesale-signup__checkbox input[type='checkbox'] {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: 0;
+}
+
+/* Field-text size, not the 1.4rem of the legend above it: this is a control the
+   visitor acts on, and it shouldn't compete with the group heading. */
+.wholesale-signup__checkbox label {
+  cursor: pointer;
+  font-size: 1.6rem;
+  letter-spacing: 0.04rem;
+}
+
+.wholesale-signup__address-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.wholesale-signup__address-row > .field {
+  flex: 1 1 auto;
+  /* Fields are 100% wide by default, which would stop them sharing the row. */
+  width: auto;
+}
+
+@media screen and (min-width: 750px) {
+  .wholesale-signup__address .select,
+  .wholesale-signup__checkbox {
+    margin-bottom: 2rem;
+  }
 }
 
 @media screen and (max-width: 749px) {
@@ -33,5 +109,9 @@
   .wholesale-signup__phone .select__select {
     padding-left: 1rem;
     padding-right: calc(var(--inputs-border-width) + 2rem);
+  }
+
+  .wholesale-signup__address-row {
+    display: block;
   }
 }
