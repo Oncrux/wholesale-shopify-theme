@@ -27,7 +27,7 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Free Shipping for orders over $500",
+            "text": "Free Shipping for orders over $500 on select items",
             "text_alignment": "center",
             "color_scheme": "accent-2",
             "link": ""
